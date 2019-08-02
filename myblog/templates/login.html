@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    {% load static %}
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
+    <title>微记－登录</title>
+    <link rel="icon" href="/icons/favicon.ico">
+    <link rel="stylesheet" href="{% static 'assets/css/core.min.css'%}">
+    <link rel="stylesheet" href="{% static 'assets/css/signin.min.css'%}">
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="http://cdn.bootcss.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="http://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body>
+<div class="container" id="container">
+    <form action="" method="post">
+        <section class="loginBox">
+            <div class="logo">
+                <img src="/icons/mh_logo.png"/>
+            </div>
+            <div class="form-group">
+                <h2>淡淡人生,微微记录</h2>
+            </div>
+            <div class="form-group">
+                <h5 id="h5_1">&nbsp;</h5>
+            </div>
+            <div class="form-group">
+                <input type="text" class="form-control loginBox_input" name="username" placeholder="邮箱/用户名">
+            </div>
+            <div class="form-group" style="margin-bottom: 0px;position: relative;">
+                <input type="password" class="form-control loginBox_input" id="password" name="password" placeholder="密码">
+                <a href="javascript:void(0)"  id="a_forget" class="loginBox_a no-link">忘记密码？</a>
+            </div>
+            <div class="loginBox_autoLogin">
+                <div>
+                    <label>
+                        <input type="checkbox" checked name="isAuto"><span style="color: #838383;font-weight:normal;margin-left:4px;">自动登录</span>
+                    </label>
+                </div>
+                <!--
+	            <div class="right"><img src="/icons/md_logo.png"/> <a href="/mingdao/login" style="color: #838383;">使用明道账号登录</a></div>
+	        	-->
+            </div>
+            <div class="clearfix"></div>
+            <div class="form-group" style="margin-top:12px;">
+                <div id="login_btn" class="btn btn-primary btn-lg btn-block loginBox_button">登录</div>
+            </div>
+            <div class="form-group" id="div_reg_1">
+                <a href="/sigin" id="a_signUp"  class="btn btn-default btn-lg btn-block loginBox_button loginBox_fontColor">注册</a>
+            </div>
+            <div class="form-group"  id="div_reg_2" style="text-align:center;display: none;margin-top: 20px;">
+                还没有微记账号？<a href="javascript:void(0);" id="a_signUp_1" style="color:#2686C9;">立即注册</a>
+            </div>
+            <div style="margin: 25px 0;">
+                <table style="width:100%;">
+                    <tr>
+                        <td style="width:30%">
+                            <div style="border: 1px solid #D2D2D2;"></div>
+                        </td>
+                        <td style="width:40%">
+                            <h5>第三方账号登录</h5>
+                        </td>
+                        <td style="width:30%">
+                            <div style="border: 1px solid #D2D2D2;"></div>
+                        </td>
+                    </tr>
+                </table>
+
+            </div>
+            <div class="form-group oauth">
+                <a href="/oauth/weibo"><img src="/static/assets/images/gallery/oauth_weibo.png" /></a>
+                <a href="/oauth/weixin"><img src="/static/assets/images/gallery/oauth_weixin.png" /></a>
+                <a href="/oauth/qq"><img src="/static/assets/images/gallery/oauth_qq.png" /></a>
+{#                <a href="/oauth/mingdao"><img src="/icons/oauth_mingdao.png" /></a>#}
+            </div>
+            <div class="form-group text-center" id="div_returnBack">
+                <div class="btn btn-default loginBox_back" onclick="javascript:history.go(-1);">返回</div>
+            </div>
+            <div class="warning"></div>
+            <input type="hidden" value="Homepage" id="hf_source" name="p">
+            <input type="hidden" value="http://127.0.0.1:9321" id="hf_callback" name="c">
+            <input type="hidden" value="" id="hf_bf" name="bf">
+            <input type="hidden" value="" id="hf_socialType" name="socialType">
+            <input type="hidden" value="" id="hf_openId" name="openId">
+            <input type="hidden" value="" id="hf_token" name="token">
+            <input type="hidden" value="" id="hf_passName" name="passName">
+            <input type="hidden" value="" id="hf_expire" name="expire">
+            <input type="hidden" value="" id="hf_message" name="message">
+        </section>
+    </form>
+</div>
+	<script src="{%  static 'assets/js/core.min.js'%}"></script>
+	<script src="{%  static 'assets/js/signin.min.js'%}"></script>
+
+<script>
+    $(function() {
+
+        $.ajax({
+            type: "GET",
+            url: PN + 'oauth/social',
+            success: function (jsonData) {
+                debugger;
+                if (jsonData.success) {
+                    var data=jsonData.data;
+                    var message=data.message;
+                    if(message!=""&&message!=undefined){
+                        if(message==-1) {
+                            alert("您的账户还未激活");
+                            window.location.href = "activeaccount";
+                        }else {
+                            alert(message);
+                        }
+                    }
+                    var openId=data.openId;
+                    var socialType=data.socialType;
+                    if(openId!=""&&openId!=undefined) {
+                        var passName="";
+                        if(socialType==1) {
+                            passName = "您已授权微博账户：" + data.passName;
+                        }else if(socialType==2) {
+                            passName = "您已授权QQ账户：" + data.passName;
+                        }else if(socialType==3) {
+                            passName = "您已授权明道账户：" + data.passName;
+                        }else if(socialType==5) {
+                            passName = "您已授权微信账户：" + data.passName;
+                        }
+                        $("#h5_1").html(passName+"<br/>绑定已有梅花网账户");
+                        $("#login_btn").html("立即绑定");
+                        $("#div_reg_1").hide();
+                        $("#div_reg_2").show();
+                    }
+                }
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+            }
+        });
+
+        $.ajax({
+            type: "GET",
+            url: PN + 'oauth/logininfo',
+            success: function (jsonData) {
+                if (jsonData.success) {
+                    var data=jsonData.data;
+                    var loginInfo=data.split("@@@@@");
+                    $("#hf_callback").val(loginInfo[0]=="null"?"":loginInfo[0]);
+                    $("#hf_source").val(loginInfo[1]=="null"?"":loginInfo[1]);
+                    $("#hf_bf").val(loginInfo[2]=="null"?"":loginInfo[2]);
+                }
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+            }
+        });
+
+
+        if(!Modernizr.input.placeholder) {
+            $('input, textarea').placeholder();
+        };
+
+        var source = $("#hf_source").val();
+        var callback = $("#hf_callback").val();
+        var bf = $("#hf_bf").val();
+
+        if(!source) {
+            $('#hf_source').val("index");
+        }
+        // 回车事件
+        $('#password') .bind('keyup',function(event) {
+            if(event.keyCode==13){
+                $(this).blur();
+                $('#login_btn').click();
+            }});
+
+        // 注册事件
+        $("#a_signUp,#a_signUp_1").bind('click',function(){
+            location.href = PN+"signup?"
+            + "p=" + source
+            + '&c=' + callback
+            + '&bf=' + bf;
+        });
+        // 忘记密码
+        $("#a_forget").bind('click',function(){
+            if(source!="") {
+                parent.location.href = PN+"forget";
+            } else{
+                location.href = PN + "forget";
+            }
+        });
+
+        // 登录事件
+        $('#login_btn').on('click', function() {
+            if ($.trim($('input[name=username]').val()) == '') {
+                alert('用户名不能为空');
+                return;
+            };
+            if ($.trim($('input[name=password]').val()) == '') {
+                alert('密码不能为空');
+                return;
+            };
+
+            var mask = startLoading('container');
+            $.ajax({
+                url: '/login',
+                type: 'POST',
+                data: $('form').serialize(),
+                dataType: 'json',
+                success: $.proxy(function(resp) {
+                    console.log(resp);
+                    if(resp.code==90000) {
+                        location.href=callback;
+//                            if(!bf) {
+//                                if(!callback) {
+//                                    window.location.href = PN;
+//                                } else {
+//                                    location.href = callback;
+//                                }
+//                            } else {
+//                                location.href = bf;
+//                            }
+                        {#if(bf!=""){#}
+                        {#    location.href=callback+"?bf="+bf;#}
+                        {#else{#}
+                        {#    if(callback!=""){#}
+                        {#        location.href = callback;#}
+                        {#    }else{#}
+                        {#        window.location.href=PN;#}
+                        {#    }#}
+
+
+                    } else if (resp.code==90010){
+                         alert(resp.msg)
+                        {#if(resp.data == -1) {#}
+                        {#    window.location.href = "activeaccount";#}
+                        {# else {#}
+                        {#    stopLoading(mask);#}
+                        {#    if(resp.data=="undefined"){#}
+                        {#        alert("用户不存在");#}
+                        {#    }else{#}
+                        {#        alert(resp.data);#}
+                        {#    }#}
+                        {##}
+                        {##}
+                    }
+                }, this),
+                failure: function(resp) {
+                    alert(resp);
+                    stopLoading(mask);
+                },
+                error: $.proxy(function (jqXHR, textStatus, resp) {
+                    alert("账号或密码输入错误,请再次输入!");
+                    stopLoading(mask)
+                }, this)
+            });
+        });
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,107 @@
+.warning {
+    color: red
+}
+
+.loginBox {
+    width: 325px;
+    margin-top: 70px;
+    margin-left: auto;
+    margin-right: auto
+}
+
+.logo {
+    text-align: center
+}
+
+.loginBox h2 {
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 45px;
+    margin-top: 30px;
+    font-family: '黑体'
+}
+
+.loginBox_input {
+    height: 45px;
+    border: none;
+    -webkit-box-shadow: none;
+    box-shadow: none
+}
+
+.loginBox_autoLogin {
+    color: #9e9e9e;
+    vertical-align: middle;
+    float: left;
+    width: 100%;
+    margin: 15px 0
+}
+
+.loginBox_back {
+    margin-top: 40px;
+    color: #9e9e9e;
+    width: 75px;
+    -moz-border-radius: 20px;
+    -webkit-border-radius: 20px;
+    border-radius: 20px
+}
+
+.loginBox_fontColor {
+    color: #9e9e9e
+}
+
+.loginBox_a {
+    left: 250px;
+    color: #9e9e9e;
+    position: relative;
+    top: -30px
+}
+
+body {
+    background-color: #f9f9f9
+}
+
+@media (max-width: 992px) {
+    .loginBox {
+        margin-top: 20px
+    }
+}
+
+@media (max-width: 768px) {
+    .loginBox {
+        width: 93%
+    }
+
+    .loginBox_a {
+        left: 0;
+        position: absolute;
+        top: 55px;
+        right: 0;
+        text-align: right
+    }
+
+    .loginBox_autoLogin {
+        margin: 10px 0
+    }
+
+    .loginBox h2 {
+        font-size: 20px;
+        margin: 20px 0
+    }
+
+    .loginBox_back {
+        margin-top: 15px
+    }
+}
+
+@media (max-width: 320px) {
+    .loginBox {
+        bottom: 4%
+    }
+}
+
+@media (max-width: 768px) and (orientation: landscape) {
+    .loginBox {
+        position: relative;
+        top: 0
+    }
+}
